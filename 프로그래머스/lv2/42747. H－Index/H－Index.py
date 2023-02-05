@@ -1,8 +1,15 @@
 def solution(citations):
     citations.sort()
-    print(citations)
     cnt=0
-    for idx,num in enumerate(citations):
-        if(idx >= num):
+    max=0
+    for i in range(len(citations)):
+        if len(citations)-i <= citations[i]:
+            print(cnt, end=' ')
+            print(i)
+            print('--------------')
             cnt+=1
-    return len(citations)-cnt+1
+            print(cnt)
+        if max<cnt:
+            max =cnt
+    return cnt
+        

@@ -1,11 +1,8 @@
 def solution(citations):
     citations.sort()
+    print(citations)
     cnt=0
-    max=0
-    for i in range(len(citations)):
-        if len(citations)-i <= citations[i]:
+    for idx,num in enumerate(citations):
+        if(idx >= num):
             cnt+=1
-        if max<cnt:
-            max =cnt
-    return max
-        
+    return len(citations)-cnt+1

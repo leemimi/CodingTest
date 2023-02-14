@@ -1,2 +1,3 @@
-# Baekjoon_Bronze
-This is a auto push repository for Baekjoon Online Judge created with [BaekjoonHub](https://github.com/BaekjoonHub/BaekjoonHub).
+# 코딩테스트 문제 풀이 저장소 
+
+백준&프로그래머스 문제 풀이 후 저장됨

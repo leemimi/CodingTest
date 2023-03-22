@@ -1,8 +1,7 @@
 from itertools import combinations
 def solution(number):
     answer = 0
-    
-    number.sort()
+
     arr =[]
     arr = list(combinations(number,3))
     

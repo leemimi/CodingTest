@@ -1,6 +1,5 @@
 import math
 def solution(dartResult):
-    answer = 0
     
     nums=[]
     dartResult = dartResult.replace("10", "A")
@@ -23,8 +22,7 @@ def solution(dartResult):
                     nums[-1]=nums[-1]*2
             else:
                 nums[-1] = nums[-1]*(-1)
-    print(nums)
-    answer = sum(nums)
+
                     
                 
-    return answer
+    return sum(nums)

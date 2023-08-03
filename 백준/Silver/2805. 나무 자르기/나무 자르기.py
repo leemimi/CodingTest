@@ -1,17 +1,22 @@
-n,m = map(int,input().split())
+n,m = map(int, input().split())
+tree = list(map(int, input().split()))
 
-tree = list(map(int,input().split()))
-lt=0
-rt=max(tree)
 tree.sort()
-while lt<=rt:
-    mid=(lt+rt)//2
-    cnt =0
-    for x in tree:
-        if x> mid:
-            cnt+=x-mid
-    if cnt >= m:
-        lt = mid+1
+
+lt = 1
+rt = tree[n-1]
+result = 0
+while lt <= rt:
+    mid = (lt+rt)//2
+    ans = 0
+
+    for a in tree:
+        if a > mid:
+            ans += a-mid
+
+    if ans >= m:
+        result = mid
+        lt = mid + 1
     else:
-        rt = mid-1
-print(rt)
+        rt = mid - 1
+print(result)

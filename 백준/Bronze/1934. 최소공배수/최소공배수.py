@@ -1,15 +1,12 @@
-def gcd(x, y):
-  if y == 0:
-    return x
-  else:
-    return gcd(y, x%y)
-  
-def lcm(x, y):
-  result = (x*y) // gcd(x,y)
-  return result
+def gcd(a,b):
+    if b == 0:
+        return a
+    else:
+        return gcd(b, a%b)
+def lcm(a,b):
+    return (a*b) // gcd(a,b)
 
-num = int(input())
-
-for i in range(num):
-  x, y = map(int, input().split(" "))
-  print(lcm(x, y))
+T = int(input())
+for _ in range(T):
+    n, m = map(int, input().split())
+    print(lcm(n,m))

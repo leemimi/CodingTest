@@ -4,18 +4,15 @@ n,w,l = map(int, input().split())
 arr = list(map(int, input().split()))
 
 truck = deque(arr)
-bridge = deque([0]*w)
-
-cnt = 0
+b = deque([0]*w)
+time = 0
 while truck:
-    bridge.popleft()
-    t=truck[0]
-    if len(bridge) < w and sum(bridge) + t <=l:
-        bridge.append(truck.popleft())
+    b.popleft()
+    t = truck[0]
+    if len(b) < w and sum(b)+t <= l:
+        b.append(truck.popleft())
     else:
-        bridge.append(0)
-    cnt+=1
+        b.append(0)
+    time+=1
 
-
-print(cnt+w)
-
+print(time+w)

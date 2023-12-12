@@ -1,31 +1,41 @@
-def dfs(v):
-    print(v, end = ' ')
-    visited[v] = 1
-    for i in range(1, n+1):
-        if visited[i] == 0  and arr[v][i] == 1:
+def dfs(n):
+    print(n, end=' ')
+    visited[n] = True
+    for i in graph[n]:
+        if not visited[i]:
             dfs(i)
 
-def bfs(v):
-    queue = [v]
-    visited[v] = 0
-    while(queue):
-        v = queue[0]
-        print(v, end = ' ')
-        del queue[0]
-        for i in range(1,n+1):
-            if visited[i] == 1 and arr[v][i] == 1:
+# Breadth First Search
+def bfs(n):
+    visited[n] = True
+    queue = deque([n])
+    while queue:
+        v = queue.popleft()
+        print(v, end= ' ')
+        for i in graph[v]:
+            if not visited[i]:
                 queue.append(i)
-                visited[i] = 0
-                
+                visited[i] = True
 
-n,m,v = map(int,input().split())
-arr = [[0]*(n+1) for _ in range(n+1)]
-visited = [0 for _ in range(n+1)]
+import sys
+from collections import deque
+
+# node, branch, first node
+n, m, v = map(int, sys.stdin.readline().split())
+graph = [[] for _ in range(n+1)]
+visited = [False] * (n + 1)
+
+# make adjacency list
 for _ in range(m):
-    a,b = map(int,input().split())
-    arr[a][b] = 1
-    arr[b][a] = 1
+    a, b = map(int, sys.stdin.readline().split())
+    graph[a].append(b)
+    graph[b].append(a)
+# sort adjacency list
+for i in range(1, n+1):
+    graph[i].sort()
 
 dfs(v)
+# initialize check list
+visited = [False] * (n + 1)
 print()
 bfs(v)

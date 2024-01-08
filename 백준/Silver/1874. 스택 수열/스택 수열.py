@@ -1,22 +1,23 @@
-import sys
-n = int(sys.stdin.readline())
-s =1
-flag = 0
-stack =[]
-answer =[]
-for _ in range(n):
+n = int(input())
+stack = []
+ans = []
+now = 1
+find = True
+for  _ in range(n):
     num = int(input())
-    while s<=num:
-        stack.append(s)
-        answer.append("+")
-        s +=1
+
+    while now <= num:
+        stack.append(now)
+        ans.append('+')
+        now+=1
     if stack[-1] == num:
         stack.pop()
-        answer.append("-")
+        ans.append('-')
     else:
-        print("NO")
-        flag =1
-        break
-if flag == 0:
-    for i in answer:
+        find = False
+
+if not find:
+    print("NO")
+else:
+    for i in ans:
         print(i)

@@ -1,49 +1,49 @@
-from collections import deque
 import sys
+from collections import deque
+
 input = sys.stdin.readline
 
-dx = [-1,1,0,0]
-dy = [0,0,-1,1]
+n = int(input())
+arr = [list(map(int, input().split()))for _ in range(n)]
+dx = [0,0,-1,1]
+dy = [1,-1,0,0]
 
-def bfs(x,y,value, visited):
+def bfs(x,y, num,visited):
     q = deque()
-    q.append((x,y))
-    visited[x][y] = 1
+    q.append((x,y,num))
 
+    visited[x][y] = True
 
     while q:
-        x,y = q.popleft()
+        x,y,rain = q.popleft()
 
         for i in range(4):
-            nx = x+dx[i]
-            ny = y+dy[i]
+            nx = x +dx[i]
+            ny = y + dy[i]
 
-            if 0<=nx<n and 0<=ny<n:
-                if arr[nx][ny] > value and visited[nx][ny] == 0:
-                    visited[nx][ny] = 1
-                    q.append((nx,ny))
+            if 0<=nx<n and 0<=ny<n :
+                if not visited[nx][ny] and arr[nx][ny] > rain:
+                    visited[nx][ny] = True
+                    q.append((nx,ny, rain))
 
 
-n = int(input())
-arr = []
-max_num = 0
+
+min_num = 101
+max_num = -1
 for i in range(n):
-    arr.append(list(map(int, input().split())))
-    for j in range(n):
-        if arr[i][j] > max_num:
-            max_num = arr[i][j]
+    for a in arr[i]:
+        min_num = min(a, min_num)
+        max_num = max(a, max_num)
 
-
-
-result = 0
+res = -1
 for k in range(max_num):
-    visited = [[0] * n for _ in range(n)]
-    ans = 0
+    visited = [[False]*n for _ in range(n)]
+    cnt = 0
     for i in range(n):
         for j in range(n):
-            if arr[i][j] > k and visited[i][j] == 0:
+            if arr[i][j] > k and not visited[i][j]:
                 bfs(i,j,k,visited)
-                ans+=1
-    result = max(result, ans)
+                cnt+=1
+    res = max(cnt, res)
 
-print(result)
+print(res)

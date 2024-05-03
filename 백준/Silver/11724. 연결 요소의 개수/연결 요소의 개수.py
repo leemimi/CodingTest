@@ -1,6 +1,6 @@
 import sys
 input = sys.stdin.readline
-
+sys.setrecursionlimit(1000000)
 n,m = map(int, input().split())
 arr = [[] for _ in range(n+1)]
 for _ in range(m):

@@ -1,22 +1,21 @@
 def solution(s):
-    if len(s) == 1:
-        return 1
-    
-    res = []
-    for i in range(1,len(s)+1):
-        b = ''
+    answer = len(s)
+    for x in range(1,len(s)//2+1):
         cnt = 1
-        tmp = s[:i]
-        for j in range(i,len(s)+i,i):
-            if tmp == s[j:i+j]:
+        prev = ''
+        prev_len = 0
+        for i in range(0,len(s)+1,x):
+            tmp = s[i:i+x]
+            if prev == tmp:
                 cnt+=1
-            else:
-                if cnt!=1:
-                    b = b + str(cnt) + tmp
-                else:
-                    b = b + tmp
-                tmp = s[j:i+j]
+            elif prev!=tmp:
+                prev_len += len(tmp)
+                if cnt>1:
+                    prev_len += len(str(cnt))
                 cnt = 1
-        res.append(len(b))
+                prev = tmp
+        answer = min(answer, prev_len)
         
-    return min(res)
+    
+    
+    return answer

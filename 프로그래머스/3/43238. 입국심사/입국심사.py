@@ -1,19 +1,26 @@
 def solution(n, times):
     answer = 0
-    lt,rt = 0, times[-1]*n
     
-    while lt <= rt:
-        mid = (rt+lt)//2
-        res = 0
-        for i in range(len(times)):
-            res += mid//times[i]
-            if res >=n:
+    times.sort()
+    
+    lt = 1
+    rt = max(times)*n
+    while lt<=rt:
+        mid = (lt+rt)//2
+        
+        p = 0
+        
+        for t in times:
+            p += mid//t
+            
+            if p >=n:
                 break
-        if res >= n:
+        if p >= n:
             answer = mid
             rt = mid -1
-        else:
-            lt = mid + 1
-        
+        elif p < n:
+            lt = mid +1
+            
+            
     
     return answer

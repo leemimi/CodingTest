@@ -7,20 +7,22 @@ res = 0
 def dfs(L, solve, cnt):
     global res
     if L == 10:
-        for i in range(len(arr)):
-            if solve[i] == arr[i]:
-                cnt+=1
-        if cnt >= 5:
-            res+=1
+        res+=1
         return
 
 
     for j in range(1,6):
-        if L >1 and solve[-1] == solve[-2] == j:
-            continue
-        solve.append(j)
-        dfs(L+1, solve, cnt)
-        solve.pop()
+        if len(solve) <2 or (solve[-1]!=solve[-2] or solve[-1]!=j):
+            solve.append(j)
+            if arr[len(solve)-1] == j:
+                dfs(L+1,solve, cnt+1)
+            else:
+                if len(solve) - cnt > 5 :
+                    solve.pop()
+                    continue
+                dfs(L+1,solve,cnt)
+            solve.pop()
+
 
 dfs(0,[], 0)
 print(res)

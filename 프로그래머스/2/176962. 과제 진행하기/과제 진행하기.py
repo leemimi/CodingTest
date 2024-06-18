@@ -1,44 +1,37 @@
 def solution(plans):
     answer = []
     
-    def times(t):
-        a,b=t.split(':')
-        return int(a)*60 + int(b)
-    
-    for p in plans:
-        p[1] = times(p[1])
-        p[2] = int(p[2])
-    plans.sort(key=lambda x:x[1])
-    
-    stack = []
     for i in range(len(plans)):
-        if i == len(plans)-1:
-            stack.append(plans[i])
-            break
-        
-        lan, st, t = plans[i]
-        nlan, nst, nt = plans[i+1]
-        
-        if st + t <= nst:
-            answer.append(lan)
-            tmp_time = nst - (st+t)
-            
-            while tmp_time != 0 and stack:
-                tsub, tst, tt = stack.pop()
-                if tmp_time >= tt:
-                    answer.append(tsub)
-                    tmp_time -= tt
-                else:
-                    stack.append([tsub,tst,tt- tmp_time])
-                    tmp_time = 0
-        else:
-            plans[i][2] = t-(nst-st)
-            stack.append(plans[i])
-            
-    while stack:
-        sub,st,tt = stack.pop()
-        answer.append(sub)
-        
-        
+        s= plans[i][1].split(':')
+        plans[i][1] = int(s[0])*60+int(s[1])
+        plans[i][2] = int(plans[i][2])
     
+    plans.sort(key= lambda x:x[1])
+    stack = []
+    stack.append(plans[0])
+    
+    now = plans[0][1]
+    for i in range(1, len(plans)):
+        lang, start, spend = plans[i]
+        while stack:
+            sl, ss, sp = stack.pop()
+
+            if now <= ss:
+                now = ss
+            
+            finish = now + sp
+            
+            if finish <= start:
+                answer.append(sl)
+                now += sp
+            else:
+                stack.append([sl, ss, finish - start])
+                now = start
+                break
+        stack.append(plans[i])
+
+    while stack:
+        l = stack.pop()[0]
+        answer.append(l)
+
     return answer

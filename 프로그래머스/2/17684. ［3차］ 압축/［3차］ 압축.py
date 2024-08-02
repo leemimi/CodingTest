@@ -1,23 +1,25 @@
 def solution(msg):
-    answer = []
-    alp ={}
-    for i in range(0,26):
-        alp[chr(65+i)] = i+1
+    answer = [0]
+    # A:65
+    dict={}
+    for i in range(1,27):
+        dict[chr(65+i-1)] = i
+    
+    w =''
+    idx = 26
+    for i in range(len(msg)):
+        w += msg[i]
+        if w not in dict:
+            idx+=1
+            dict[w] = idx
+            w = msg[i]
+            answer.append(dict[w])
+            
+        else:
+            answer[-1] = dict[w]
+            
+    
+            
     
     
-    k = 0
-    while k < len(msg):
-        wc = msg[k]
-        i = 1
-        while k+i < len(msg) and wc + msg[k+i] in alp:
-            wc += msg[k+i]
-            i += 1
-        answer.append(alp[wc])
-        if k+i < len(msg):
-            alp[wc + msg[k+i]] = len(alp) + 1
-        k += i
-            
-            
-            
-        
     return answer

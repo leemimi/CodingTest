@@ -1,48 +1,26 @@
 import java.util.*;
-import java.util.stream.Collectors;
 class Solution {
-    static int nn;
-    static int bk;
-    static int[] enemys;
     public int solution(int n, int k, int[] enemy) {
+        int answer = 0;
         
-        enemys = enemy;
-        bk = k;
-        nn = n;
+        Queue<Integer> pq= new PriorityQueue<>(Collections.reverseOrder());
         
-        int lt = 0;
-        int rt = enemy.length;
-        
-        while(lt<rt){
-            int mid = (lt+rt)/2;
+        for(int i=0; i<enemy.length;i++){
+            n-=enemy[i];
+            pq.add(enemy[i]);
             
-            if(isDefence(mid)){
-                lt = mid +1;
-            }else{
-                rt = mid;
+            if(n<0){
+                if(k>0){
+                    n+=pq.poll();
+                    k-=1;
+                }else{
+                    break;
+                }
             }
-            
+            answer++;
         }
         
-        return lt;
-    }
-    static boolean isDefence(int mid){
-        List<Integer> em = Arrays.stream(enemys,0,mid+1)
-            .boxed()
-            .sorted()
-            .collect(Collectors.toList());
-        int size = em.size();
         
-        int num = nn;
-        
-        for(int i=0; i<size;i++){
-            Integer e = em.get(i);
-            if(e<=num){
-                num -= e;
-                continue;
-            }
-            return bk>=size-i;
-        }
-        return true;
+        return answer;
     }
 }

@@ -2,27 +2,36 @@ import java.util.*;
 class Solution {
     public int solution(int[] priorities, int location) {
         int answer = 0;
-        PriorityQueue<Integer> pq = new PriorityQueue<>(Collections.reverseOrder());
         
-        for(int i=0;i<priorities.length;i++){
-            pq.add(priorities[i]);
+        Queue<int[]> q = new LinkedList<>();
+        int n = priorities.length;
+        for(int i=0; i<n;i++){
+            q.offer(new int[]{i, priorities[i]});
         }
-        int cnt = 0;
         
-        while(!pq.isEmpty()){
-            for(int i=0;i<priorities.length;i++){
-                if(priorities[i]==pq.peek()){
-                    if(location==i){
-                        cnt++;
-                        return cnt;
-                    }
-                    pq.poll();
-                    cnt++;
+        while(!q.isEmpty()){
+            
+            int[] current = q.poll();
+            boolean flag = false;
+            for(int[] job: q){
+                if (job[1] > current[1]){
+                    flag = true;
                 }
             }
+            
+            if(flag){
+                q.offer(current);
+            }else{
+                answer++;
+                if(current[0]==location){
+                    break;
+                }
+            }
+            
+            
         }
         
         
-        return -1;
+        return answer;
     }
 }

@@ -1,27 +1,40 @@
 from collections import Counter
 def solution(str1, str2):
     answer = 0
-    str1 = str1.upper()
-    str2 = str2.upper()
     
-    s1=[]
-    s2=[]
-    for i in range(len(str1)-1):
-        if str1[i].isalpha() and str1[i+1].isalpha():
-            s1.append(str1[i]+str1[i+1])
-    for i in range(len(str2)-1):
-        if str2[i].isalpha() and str2[i+1].isalpha():
-            s2.append(str2[i]+str2[i+1])
+    a = []
+    b = []
+    
+    for i in range(0,len(str1)-1):
+        s1 = str1[i] + str1[i+1]
+        if not str1[i+1].isalpha() or not str1[i].isalpha():
+            continue
+        s1 = s1.upper() 
+        a.append(s1)
+
+    for i in range(0,len(str2)-1):
+        s2 = str2[i] + str2[i+1]
+        if not str2[i+1].isalpha() or not str2[i].isalpha():
+            continue
+        s2 = s2.upper()
+        b.append(s2)
         
-    s1 = Counter(s1)
-    s2 = Counter(s2)
+    ca = Counter(a)
+    cb = Counter(b)
     
-    inner = list((s1&s2).elements())
-    union = list((s1|s2).elements())
+    ja = ca&cb
+    jb = ca|cb
     
-    if len(union) == 0 and len(inner) == 0:
-        return 65536
-    else:
-        return int(len(inner)/len(union)*65536)
+    print(ja)
+    print(jb)
     
-    return answer
+    ja = sum(ja.values())
+    jb = sum(jb.values())
+
+
+    if(jb == 0):
+         return 65536
+    
+    answer = ja/jb
+    
+    return int(answer*65536)

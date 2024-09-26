@@ -1,27 +1,28 @@
 def solution(n, t, m, p):
     answer = ''
-    
-    def convert(number, a):
-        if number == 0:
-            return '0'
-        numbers = "0123456789ABCDEF"
-        tmp = ""
+    ans = ''
+    def find(num, base):
+        tmp = "0123456789ABCDEF"
+        q,r = divmod(num,base)
         
-        while number> 0:
-            number, mod = divmod(number,n)
-            tmp += numbers[mod]
-        return tmp[::-1]
+        if q == 0:
+            return tmp[r]
+        else:
+            return find(q,base) + tmp[r]
+    j = 0
+    while len(ans) <t*m:
+        ans += str(find(j,n))
+        j+=1
+        
+    for i in range(p-1,t*m,m):
+        answer += ans[i]
+                 
     
-    cur = p-1
-    game = ''
-    for num in range(t*m):
-        game += convert(num, n)
-    
-    while True:
-        if len(answer) == t:
-            break
+    print(answer)
+
             
-        answer += game[cur]
-        cur += m
-        
+    
+    
+    
     return answer
+

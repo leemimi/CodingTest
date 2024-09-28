@@ -1,39 +1,60 @@
-from math import ceil
+import math
 def solution(fees, records):
     answer = []
     
-    def contime(times):
-        times = times.split(':')
-        return int(times[0])*60 + int(times[1])
-    maxtime = 23*60 + 59
-    res = {}
-    for record in records:
-        time, num, io = record.split()
-        time = contime(time)
-        if num in res:
-            res[num].append([time,io])
+    dict ={}
+    end = 23*60 + 59
+    
+    def calc(tmp, fees):
+        m = fees[1]
+        if tmp <= fees[0]:
+            return m
         else:
-            res[num] = [[time,io]]
+            v = abs(tmp - fees[0])
+            m += math.ceil(v/fees[2])*fees[3]
+        return m
     
+    
+    for record in records:
+        r = record.split(' ')
+        r[1] = int(r[1])
+        r[0] = int(r[0][0:2])*60 + int(r[0][3:5])
+        if r[1] not in dict:
+            dict[r[1]] = [(r[0], r[2])]
+        else:
+            dict[r[1]].append((r[0],r[2]))
+            
     ans = {}
-    for r in res:
-        
-        total = 0
-        pay = fees[1]
-        
-        if len(res[r]) %2 != 0:
-            res[r].append([maxtime,'OUT'])
-        
-        for m in res[r]:
-            if m[1] == 'IN':
-                total -= m[0]
+    #r[0]번호, 뒤가 인 아웃
+    for key, record in dict.items():
+        money = 0
+        time = 0
+        flag = True
+        count = 0
+        for r in record:
+            if r[1] == 'IN':
+                flag = True
+                time = r[0]
             else:
-                total += m[0]
-        if total > fees[0]:
-            pay += ceil((total - fees[0])/fees[2])*fees[3]
+                flag = False
+                tmp = abs(time - r[0])
+                count += tmp
         
-        ans[r] = pay
-    ans = sorted(ans.items())
+        if flag:
+            tmp = abs(end - time)
+            count += tmp
+            print(key, count)
+            money = calc(count, fees)
+        else:
+            money = calc(count, fees)
+            
+        
+        ans[key] = round(money)
+        
+    ans = sorted(ans.items(), key=lambda x:x[0])
     
-
-    return [b for a,b in ans]
+    for k,v in ans:
+        answer.append(v)
+        
+    
+    return answer

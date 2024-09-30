@@ -1,17 +1,24 @@
+from collections import deque
 def solution(a):
     answer = 0
     
-    res = [False]*len(a)
-    minf = float('inf')
-    minb = float('inf')
+    ldp = [float('inf')]*len(a)
+    ldp[0] = a[0]
     
-    for i in range(len(a)):
-        if a[i] < minf:
-            minf = a[i]
-            res[i] = True
-        if a[-1-i] < minb:
-            minb = a[-1-i]
-            res[-1-i] = True
+    for i in range(1,len(a)):
+        ldp[i] = min(ldp[i-1],a[i])
+    
+    ldp[-1] = a[-1]
+    for i in range(len(a)-2,0,-1):
+        if a[i] < ldp[i-1] and a[i] < ldp[i+1]:
+            answer+=1
+        elif (ldp[i-1] <a[i] <ldp[i+1]) or (ldp[i-1]>a[i]>ldp[i+1]):
+            answer+=1
+        else:
+            pass
         
+        ldp[i] = min(ldp[i+1],a[i])
     
-    return sum(res)
+    
+    
+    return answer+2

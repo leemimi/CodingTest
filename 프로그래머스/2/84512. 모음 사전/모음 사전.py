@@ -1,22 +1,19 @@
 def solution(word):
     answer = 0
-    dict ='AEIOU'
-    idx = 0
+    dict = []
     
-    def dfs(L, s):
-        nonlocal idx
-        nonlocal answer
-        if s == word:
-            answer = idx
+    alp = 'AEIOU'
+    def dfs(w,dict):
+        if len(w) == 5:
             return
+        for a in alp:
+            w.append(a)
+            dict.append(''.join(w))
+            dfs(w, dict)
+            w.pop()
+    
+    words = []
+    dit = []
+    dfs(words, dit)
         
-        if L > 5:
-            return
-        
-        idx+=1
-        for i in range(5):
-            dfs(L+1, s+dict[i])
-
-
-    i = dfs(0,'')
-    return answer
+    return dit.index(word)+1

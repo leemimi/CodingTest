@@ -1,19 +1,22 @@
-from collections import Counter
 def solution(topping):
     answer = 0
     
-    old = Counter(topping)
-    young = set()
+    lt = set()
+    rt = {}
     
     for t in topping:
-        old[t] -=1
-        young.add(t)
-        
-        if old[t] == 0:
-            old.pop(t)
-        if len(old.keys()) == len(young):
+        if t in rt:
+            rt[t] +=1
+        else:
+            rt[t] = 1
+            
+    for t in topping:
+        lt.add(t)
+        rt[t] -=1
+        if rt[t] == 0:
+            del rt[t]
+        if len(lt) == len(rt):
             answer+=1
-    
     
     
     return answer

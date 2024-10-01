@@ -1,25 +1,20 @@
 def solution(msg):
-    answer = [0]
-    # A:65
-    dict={}
-    for i in range(1,27):
-        dict[chr(65+i-1)] = i
+    answer = []
+    dict = {chr(idx + 64):idx for idx in range(1, 27)}
+    key = 27
     
-    w =''
-    idx = 26
-    for i in range(len(msg)):
-        w += msg[i]
-        if w not in dict:
-            idx+=1
-            dict[w] = idx
-            w = msg[i]
-            answer.append(dict[w])
+    w = c= 0
+    while True:
+        c+=1
+        if c ==len(msg):
+            answer.append((dict[msg[w:c]]))
+            break
             
-        else:
-            answer[-1] = dict[w]
+        if msg[w:c+1] not in dict:
+            dict[msg[w:c+1]] = key
+            key+=1
+            answer.append(dict[msg[w:c]])
+            w=c
             
-    
-            
-    
     
     return answer

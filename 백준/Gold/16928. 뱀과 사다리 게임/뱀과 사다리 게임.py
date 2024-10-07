@@ -1,5 +1,7 @@
 import sys
+input = sys.stdin.readline
 from collections import deque
+
 
 n,m = map(int, input().split())
 ladders = {}
@@ -11,31 +13,33 @@ for _ in range(m):
     a,b = map(int, input().split())
     snakes[a] = b
 
-q = deque([1])
-visited = [False]*101
-visited[1] = False
+arr = [False]*101
+arr[1] = True
 cnt = 0
+q = deque([1])
+
+
 flag = True
 while flag:
 
     for _ in range(len(q)):
         now = q.popleft()
-
-        if now == 100:
+        if now >=100:
             print(cnt)
-            flag =False
+            flag = False
             break
-        for d in range(1,7):
-            nx = now+ d
-            if nx <= 100 and not visited[nx]:
-                visited[nx]=True
 
-                if nx in ladders.keys():
-                    visited[ladders[nx]]=True
-                    q.append(ladders[nx])
+        for i in range(1,7):
+            nx = now + i
+            if nx<= 100 and not arr[nx]:
+                arr[nx] = True
+                if nx in ladders.keys() :
+                    arr[ladders[nx]] = True
+                    q.append((ladders[nx]))
+
                 elif nx in snakes.keys():
-                    visited[snakes[nx]]=True
-                    q.append(snakes[nx])
+                    arr[snakes[nx]] = True
+                    q.append((snakes[nx]))
                 else:
                     q.append(nx)
     cnt+=1

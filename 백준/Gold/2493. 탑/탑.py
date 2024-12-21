@@ -1,15 +1,14 @@
 n = int(input())
-tops = list(map(int, input().split()))
-stack=[]
-ans = [0]*n
-for i in range(0,n):
+arr = list(map(int, input().split()))
+
+stack = []
+answer = [0]*n
+for i in range(n):
     while stack:
-        if(stack[-1][0]>=tops[i]):
-            ans[i] = stack[-1][1]
+        if arr[i] <= stack[-1][0]:
+            answer[i] = stack[-1][1]
             break
         else:
             stack.pop()
-    stack.append((tops[i],i+1))
-
-for i in range(n):
-    print(ans[i], end=' ')
+    stack.append((arr[i], i+1))
+print(*answer)

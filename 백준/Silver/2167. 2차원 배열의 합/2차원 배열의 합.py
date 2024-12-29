@@ -1,14 +1,14 @@
-n,m = map(int, input().split())
+import sys
+n, m = map(int, sys.stdin.readline().split())
 arr = [list(map(int, input().split()))for _ in range(n)]
-B = [[0]*(m+1) for _ in range(n+1)]
 
-
-for i in range(1,n+1):
+dp = [[0]*(m+1) for _ in range(n+1)]
+for i in range(1, n+1):
     for j in range(1, m+1):
-        B[i][j] = B[i-1][j] + B[i][j-1] - B[i-1][j-1] + arr[i-1][j-1]
+        dp[i][j] = arr[i-1][j-1] + dp[i-1][j] + dp[i][j-1] - dp[i-1][j-1]
 
-t = int(input())
-for _ in range(t):
-    x1,y1,x2,y2 = map(int, input().split())
 
-    print(B[x2][y2] - B[x2][y1-1] - B[x1-1][y2] + B[x1-1][y1-1])
+k = int(input())
+for _ in range(k):
+    i,j,x,y = map(int, input().split())
+    print(dp[x][y] - dp[i-1][y] - dp[x][j-1] + dp[i-1][j-1])

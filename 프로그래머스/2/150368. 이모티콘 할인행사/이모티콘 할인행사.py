@@ -1,24 +1,40 @@
 from itertools import product
 def solution(users, emoticons):
-             
-    answer = []
+    answer = [0, 0]
     data = [10, 20, 30, 40]
-    max_sub, max_sales = 0, 0
-    for discount in product([10,20,30,40],repeat=len(emoticons)):
-        curr_sub, curr_sales = 0,0
-        for rate, total in users:
-            res = 0
-            for r,emo in zip(discount, emoticons):
-                if r >= rate:
-                    res += int(emo - emo*(r/100))
-            if res >= total:
-                curr_sub +=1
+    
+    discount = []
+    def dfs(L,tmp):
+        if L == len(tmp):
+            discount.append(tmp[:])
+            return
+        else:
+            for i in data:
+                tmp[L]+=i
+                dfs(L+1,tmp)
+                tmp[L]-=i
+    dfs(0,[0]*len(emoticons))
+    
+    for dis in discount:
+        cnt = 0
+        get = 0
+        for u in users:
+            pay = 0
+            for j in range(len(dis)):
+                if u[0] <= dis[j]:
+                    pay += emoticons[j]*(100-dis[j])/100
+            if pay >= u[1]:
+                pay = 0
+                cnt += 1
+            get += pay
+        if cnt >= answer[0]:
+            if answer[0] == cnt:
+                answer[1] = max(answer[1], get)
             else:
-                curr_sales += res
-        if curr_sub > max_sub:
-            max_sub, max_sales = curr_sub, curr_sales
-        elif curr_sub == max_sub and curr_sales > max_sales:
-            max_sales = curr_sales
-
+                answer[1] = get
+            answer[0] = cnt
             
-    return max_sub, max_sales
+            
+                
+    
+    return answer

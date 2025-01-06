@@ -1,14 +1,20 @@
 def solution(storey):
-    answer = 0
+    answer = 1000000001
+    k = len(str(storey))+1
     
-    while storey:
-        storey, r = storey//10, storey%10
+    def dfs(n,k,cnt):
+        nonlocal answer
         
-        if r<5 or (r==5 and storey%10<5):
-            answer += r
-
-        else:
-            answer += (10 -r )
-            storey+=1
+        if not k:
+            answer = min(answer,cnt)
+            return
+        q,r = n//10, n%10
+        dfs(q,k-1,cnt+r)
+        dfs(q+1,k-1,cnt+10-r)
+    
+    dfs(storey,k,0)
     
     return answer
+
+
+

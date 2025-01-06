@@ -1,21 +1,25 @@
 def solution(sequence, k):
-    answer = [0,len(sequence)]
+    answer = [0, len(sequence)]
+    n = len(sequence)
     
-    lt = 0
+    sums = sequence[0]
+    lt =0
     rt = 0
     
-    res = sequence[0]
-    
     while True:
-        if res<k:
+        if sums < k:
             rt+=1
-            if rt == len(sequence):break
-            res+=sequence[rt]
+            if rt == n:
+                break
+            sums+= sequence[rt]
+
         else:
-            if res == k:
-                if rt - lt < answer[1] - answer[0]:
-                    answer = [lt,rt]
-            res -= sequence[lt]
+            if sums == k:
+                if answer[1]-answer[0] > rt -lt:
+                    answer = [lt, rt]
+            sums-= sequence[lt]
             lt+=1
-    
+
+
+
     return answer

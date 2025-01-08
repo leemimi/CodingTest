@@ -1,24 +1,27 @@
-import sys
+n,C = map(int, input().split())
+strs = sorted(list(map(str, input().split())))
+mo = set('aieou')
+arr = []
+def check(a):
+    k =0
+    for j in range(n):
+        if a[j] in mo:
+            k+=1
+    if k>=1 and len(a) - k>=2:
+        return True
+    return False
 
-def back_tracking(cnt, idx):
-    if cnt == L:
-        vo,co = 0,0
-        for i in range(L):
-            if ans[i] in cons:
-                vo+=1
-            else:
-                co+=1
-        if vo>=1 and co>=2:
-            print("".join(ans))
+
+def dfs(L, keys):
+    if len(keys) == n:
+        if check(keys):
+            arr.append((keys))
         return
-    for i in range(idx,C):
-        ans.append(arr[i])
-        back_tracking(cnt+1, i+1)
-        ans.pop()
 
+    for i in range(L, C):  # start부터 탐색
+        dfs(i + 1, keys + strs[i])
 
-L,C = map(int, input().split())
-arr = sorted(list(map(str, input().split())))
-ans =[]
-cons = ['a', 'e', 'i', 'o', 'u']
-back_tracking(0,0)
+dfs(0,'')
+arr.sort()
+for a in arr:
+    print(a)

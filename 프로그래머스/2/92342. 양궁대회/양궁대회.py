@@ -1,38 +1,53 @@
 def solution(n, info):
-    answer = []
+    global maxDiff, answer
+    answer = [-1]
+    tmp = [0]*11
+    maxDiff = 0
     
-    score = [0]*11
-    diff = 0
-    
-    def dfs(m,L):
-        nonlocal answer, diff, score
+    def find_gap(score):
         
-        if m == n:
-            a,b =0,0
-            for j in range(11):
-                if score[j] > info[j]:
-                    b +=(10-j)
-                elif 0!=info[j] and score[j] <= info[j]:
-                    a+= (10-j)
-            if b>a:
-                if diff < abs(b-a):
-                    diff = abs(b-a)
-                    answer = score[:]
-                elif diff == abs(b-a):
-                    for i in range(10,-1,-1):
-                        if score[i] < answer[i]:
-                            break
-                        if score[i] > answer[i]:
-                            answer = score[:]
-                            break
+        apich, rian = 0, 0
+        for i in range(len(score)):
+            if score[i] > 0 or info[i] > 0:
+                if score[i] > info[i]:
+                    rian += (10 - i)
+                else:
+                    apich += (10-i)
+        return (rian>apich, abs(rian- apich))
+    
+    
+    def dfs(L, cnt):
+        global maxDiff, answer
+        if L == 11 or cnt ==0:
+            winner, gap = find_gap(tmp)
+            
+            if winner:
+                if cnt >= 0:
+                    tmp[10] = cnt
+                if gap > maxDiff:
+                    maxDiff = gap
+                    answer = tmp.copy()
+
+                    
+                elif gap == maxDiff:
+                    for i in range(len(tmp)):
+                        if answer[i] > 0:
+                            a = i
+                        if tmp[i] > 0 :
+                            b = i
+                    if b > a :
+                        answer = tmp.copy()
+                        
             return
+            
+
+        if cnt >info[L]:
+            tmp[L] = info[L]+1
+            dfs(L+1, cnt - (info[L]+1))
+            tmp[L] = 0
         
-        for i in range(L,11):
-            score[i] +=1
-            dfs(m+1,i)
-            score[i]-=1
-        
+        dfs(L+1, cnt)
     
-        
-    dfs(0,0)
-    return answer if answer else [-1]
+
+    dfs(0,n)
+    return answer

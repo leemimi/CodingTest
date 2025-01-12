@@ -1,31 +1,38 @@
-from collections import defaultdict
 def solution(user_id, banned_id):
-    answer = []
+    answer = 0
     
-    res = [[]]
-    for banned in banned_id:
-        ban = []
-        for u in user_id:
-
-            if len(u) != len(banned):
-                continue
-            flag = True
-            for i in range(len(u)):
-            
-                if banned[i] == '*':
-                    continue
-                if banned[i] != '*' and banned[i]!= u[i]:
-                    flag = False
-                    break
-            if flag:
-                for r in res:
-                    if u not in r:
-                        ban.append(r+[u])
-        res = ban
-    for r in res:
-        if set(r) not in answer:
-            answer.append(set(r))
+    idx=[ [] for _ in range(len(banned_id)) ]
+    for u in range(len(user_id)):
+        user_id[u] = list(user_id[u])
     
-    # print(answer)
+    for b in range(len(banned_id)):
+        banned_id[b]=list(banned_id[b])
+        for i in range(len(banned_id[b])):
+            if banned_id[b][i] == '*':
+                idx[b].append(i)
+                
+    def dfs(L, tmp):
+        if L == len(banned_id):
+            ans.append(tmp)
+            tmp = []
+            return
+        for u in range(len(user_id)):
+            if len(user_id[u])==len(banned_id[L]):
+                ban = banned_id[L][:]
+                for i in idx[L]:
+                    ban[i] = user_id[u][i]
+                    
+                if visited[u]==0 and user_id[u] == ban:
+                    visited[u] = 1
+                    dfs(L+1, tmp+["".join(user_id[u])])
+                    visited[u] = 0
+                
         
+    visited=[0]*len(user_id)    
+    ans = []
+    dfs(0,[])
+    answer = set()
+    for a in ans:
+        answer.add(tuple(set(sorted(a))))
+    
     return len(answer)

@@ -1,27 +1,21 @@
 from collections import defaultdict
 def solution(genres, plays):
     answer = []
+    n = len(genres)
+    times = defaultdict(int)
+    for i in range(n):
+        times[genres[i]] += plays[i]
     
-    gen = {}
-    dict = {}
-    for i ,(g,p) in enumerate(zip(genres, plays)):
-        if g not in gen:
-            gen[g] = [(i,p)]
-        else:
-            gen[g].append((i,p))
+    q=defaultdict(list)
+    for i, (g,p) in enumerate(zip(genres, plays)):
+        q[g].append([i,p])
         
-        if g not in dict:
-            dict[g] = p
-        else:
-            dict[g] +=p
-            
+    
+    t = sorted(q.items(), key = lambda x:(sum(p for _, p in x[1])), reverse = True)
+
+    for genre, play in t:
+        play.sort(key = lambda x:(-x[1], x[0]))
+        answer.extend([i for i, _ in play[:2]])
     
     
-    for (k,v) in sorted(dict.items(), key = lambda x:x[1], reverse = True):
-        for (i,p) in sorted(gen[k], key= lambda x:x[1], reverse= True)[:2]:
-            answer.append(i)
-    
-    
-    print(gen)
-    print(dict)
     return answer

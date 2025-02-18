@@ -1,49 +1,59 @@
 import java.util.*;
-
 class Solution {
+    static int n;
+    static int m;
+    static int[] dx = {0,0,-1,1};
+    static int[] dy= {1,-1,0,0};
     public int[] solution(String[][] places) {
-        int[] answer = new int[5];
-        
-        for(int k=0;k<places.length;k++){
-            String[] tmp = places[k];
-            boolean check = false;
-            for(int i=0; i<5;i++){
-                for(int j=0; j<5;j++){
-                    if(tmp[i].charAt(j)=='P'){
-                        if(bfs(i,j,tmp)) check = true;
+        List<Integer> answer = new ArrayList<>();
+        n = places.length;
+        m = places[0].length;
+        for(String[] place : places){
+            boolean isSafe = true;
+            for(int i =0; i<n;i++){
+                for(int j =0; j<m ;j++){
+                    if(place[i].charAt(j)=='P'){
+                        int ans = bfs(i,j,place);
+                        if(ans==0){
+                            isSafe = false;
+                            break;
+                        }
                     }
                 }
             }
-            answer[k] = check ? 0:1; 
+            if(isSafe){
+                answer.add(1);
+            }else{
+                answer.add(0);
+            }
+    }
+        
+        return answer.stream().mapToInt(Integer::intValue).toArray();
+    }
+    public int bfs(int x, int y, String[] place){
+        Queue<int[]> q = new LinkedList<>();
+        q.offer(new int[]{x,y,0});
+        boolean[][] visited = new boolean[n][m];
+        visited[x][y] = true;
+        
+        while (!q.isEmpty()){
+            int[] tmp = q.poll();
+            int cx = tmp[0];
+            int cy = tmp[1];
+            int dist = tmp[2];
+            if (dist >2 ) continue;
+            if (dist>0 && place[cx].charAt(cy)=='P') return 0;
+            for(int i=0; i<4; i++){
+                int nx = cx+ dx[i];
+                int ny = cy +dy[i];
+                if(nx>=0&&nx<n&& ny>=0 && ny<m && !visited[nx][ny]&& place[nx].charAt(ny)!='X'){
+                    visited[nx][ny] = true;
+                    q.offer(new int[]{nx,ny,dist+1});
+                }
+            }
+            
         }
         
-        return answer;
+        return 1;
     }
-static boolean bfs(int x, int y, String[] p){
-    Queue<int[]> q = new LinkedList<>();
-    q.add(new int[]{x,y});
-    
-    int[] dx = {1,-1,0,0};
-    int[] dy = {0,0,-1,1};
-    
-    while(!q.isEmpty()){
-        int[] temp = q.poll();
-        for(int i=0; i<4;i++){
-            int nx = dx[i]+temp[0];
-            int ny = dy[i] + temp[1];
-        
-        if((nx<0||ny<0||nx>=5||ny>=5)||(nx==x &&ny==y)){
-            continue;
-        }
-        
-        int m = Math.abs(x-nx)+Math.abs(y-ny);
-        if(p[nx].charAt(ny)=='P'&&m<=2){
-            return true;
-        }else if(p[nx].charAt(ny)=='O'&&m<2){
-            q.add(new int[]{nx,ny});
-        }
-    }
-    }
-            return false;
-}
 }

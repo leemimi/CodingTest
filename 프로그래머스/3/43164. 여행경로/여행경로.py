@@ -1,29 +1,23 @@
-from collections import deque
-from collections import defaultdict
-
 def solution(tickets):
     answer = []
-    dic = defaultdict(list)
-    for [a,b] in tickets:
-        dic[a].append(b)
-    print(dic)
     
-    for key in dic.keys():
-        dic[key].sort(reverse=True)
-    print(dic)
-    
-    stack = ["ICN"]
-    path =[]
-    
-    while stack:
-        top = stack[-1]
-        
-        if not dic[top] or len(dic[top])==0:
-            path.append(stack.pop())
-        else:
-            stack.append(dic[top].pop())
-            
-        print(path)
-    return path[::-1]
 
-            
+    
+    def dfs(L, now, ans):
+        if L == len(tickets):
+            answer.append(ans)
+            return
+        
+        for i in range(len(tickets)):
+            if not visited[i] and tickets[i][0] == now:
+                visited[i] = 1
+                dfs(L+1, tickets[i][1], ans + " "+ tickets[i][1])
+                visited[i] = 0
+        
+    visited = [0]*len(tickets)
+    dfs(0,"ICN", "ICN")
+        
+    answer.sort()
+
+    
+    return answer[0].split(" ")

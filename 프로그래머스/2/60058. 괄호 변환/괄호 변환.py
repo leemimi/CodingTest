@@ -1,57 +1,56 @@
+def devide(n):
+    lt = 0
+    rt = 0
+    for i in range(len(n)):
+        if n[i] == '(':
+            lt+=1
+        else:
+            rt+=1
+        if lt == rt:
+            return n[:i+1], n[i+1:]
+def check(s):
+    stack = []
+    for i in s:
+        if i=='(':
+            stack.append(i)
+        else:
+            if len(stack) == 0:
+                return False
+            stack.pop()
+    return True
+    
 def solution(p):
     answer = ''
+    # 1번
+    if not p:
+        return ''
     
+    #2번수행 나누자
+    u, v = devide(p)
     
-    def vailed(a):
-        stack = []
-        for i in range(len(a)):
-            if a[i] =='(':
-                stack.append('(')
-            else:
-                if len(stack):
-                    stack.pop()
-                else:
-                    return False
-        return True
-    
-    
-    def devide(c):
-        lt, rt = 0,0
-        for i in range(len(c)):
-            if c[i] =='(':
-                lt+=1
-            else:
-                rt+=1
-            if lt == rt:
-                return c[:i+1], c[i+1:]
-    
-    def solve(b):
-        if not b:
-            return ''
-        
-        u,v = devide(b)
-        
-        if vailed(u):
-            return u + solve(v)
-        else:
-            tmp ='('
-            s = solve(v)
-            tmp+= s + ')'
-            
-            for s in u[1:len(u)-1]:
-                if s=='(':
-                    tmp+=')'
-                else:
-                    tmp+='('
-        return tmp
-            
-    
-        
-    flag = True
-    if vailed(p):
-        return p
+    #3번 문자열 u 검증
+    flag = check(u)
+    if flag:
+        return u+solution(v)
     else:
-        answer = solve(p)
-    
+        answer = '('
+        answer += solution(v)
+        answer += ')'
+        
+        u = u[1:len(u)-1]
+        for i in u:
+            if i =='(':
+                answer += ')'
+            else:
+                answer+= '('
+        return answer
+            
+
+        
+            
+        
+    if len(stack) == 0:
+        return p
+            
     
     return answer

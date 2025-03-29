@@ -1,21 +1,31 @@
 def solution(s):
-    answer = len(s)
-    for x in range(1,len(s)//2+1):
+    answer = []
+    
+    if len(s) == 1:
+        return 1
+    
+    idx = 1
+    for i in range(1,len(s)//2+1):
+        pre = s[:i]
         cnt = 1
-        prev = ''
-        prev_len = 0
-        for i in range(0,len(s)+1,x):
-            tmp = s[i:i+x]
-            if prev == tmp:
+        res = ''
+        for j in range(i,len(s),i):
+            if pre == s[j:j+i]:
                 cnt+=1
-            elif prev!=tmp:
-                prev_len += len(tmp)
-                if cnt>1:
-                    prev_len += len(str(cnt))
+            else:
+                if cnt > 1:
+                    res+= str(cnt) + pre
+                else:
+                    res += pre
                 cnt = 1
-                prev = tmp
-        answer = min(answer, prev_len)
+                pre = s[j:j+i]
+        if cnt>1:
+            res += str(cnt) + pre
+        else:
+            res += pre
+        answer.append(len(res))
         
+        
+                    
     
-    
-    return answer
+    return min(answer)

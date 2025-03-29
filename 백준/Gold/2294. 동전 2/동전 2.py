@@ -1,15 +1,15 @@
-n,k = map(int,input().split())
-coin = []
+n,k = map(int, input().split())
+arr = []
 for _ in range(n):
-    c = int(input())
-    coin.append(c)
+    arr.append(int(input()))
 
 dp = [10001]*(k+1)
 dp[0] = 0
-for c in coin:
-    for i in range(c, k+1):
-        dp[i] = min(dp[i],  dp[i-c]+1)
-if dp[-1] == 10001:
+
+for coin in arr:
+    for i in range(coin, k+1):
+        dp[i] = min(dp[i], dp[i-coin]+1)
+if dp[k] == 10001:
     print(-1)
 else:
-    print(dp[-1])
+    print(dp[k])

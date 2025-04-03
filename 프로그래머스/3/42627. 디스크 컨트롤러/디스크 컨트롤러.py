@@ -2,26 +2,23 @@ import heapq
 def solution(jobs):
     answer = 0
     jobs.sort()
-    q = []
-    now = 0
-    i = 0
+    num = len(jobs)
+    heap = []
     start = -1
-    
-    while i != len(jobs):
-        for j in jobs:
-            if start < j[0] <= now:
-                heapq.heappush(q,[j[1],j[0]])
-        if q:
-            cur = heapq.heappop(q)
+    now = 0 #현재시각
+    i = 0
+    while i<num:
+        for job in jobs:
+            if start < job[0] <= now:
+                heapq.heappush(heap, [job[1],job[0]]) #걸리는시간, 시작시간
+        if len(heap)>0:
+            work = heapq.heappop(heap)
             start = now
-            now += cur[0]
-            answer += now - cur[1]
+            now += work[0] #걸리는 시간 더해주기
+            answer += now - work[1]
             i+=1
         else:
             now+=1
-            
-            
-        
     
     
-    return answer//len(jobs)
+    return answer//num

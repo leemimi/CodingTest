@@ -1,14 +1,14 @@
 def solution(n, s):
     answer = []
     
-    if s//n <= 0 : return [-1]
+    if s//n==0:
+        return [-1]
     
-    for i in range(n):
+    for _ in range(n-s%n):
         answer.append(s//n)
-    
-    for i in range(s%n):
-        answer[i] += 1
-    
-    answer.sort()
+        
+    for _ in range(s%n):
+        answer.append(s//n+1)
+
     
     return answer

@@ -1,16 +1,17 @@
-from collections import deque
 def solution(routes):
-    answer = 1
+    answer = 0
     
-    routes.sort(key = lambda x: x[1])
-    prev = routes[0][1]
+    routes.sort(key = lambda x:(x[1],x[0]))
+    stack =[]
+    for route in routes:
+        if not stack:
+            stack.append(route)
+        if stack[-1][1] >= route[0]:
+            continue
+        else:
+            stack.append(route)
     
-    for start, end in routes:
-        if start > prev:
-            answer +=1
-            prev = end
-            
+        
     
-    return answer
-
-
+    print(stack)
+    return len(stack)

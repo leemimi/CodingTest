@@ -4,40 +4,30 @@ class Solution {
         int answer = 0;
         
         int lt = 1;
-        int rt = Arrays.stream(diffs).max().getAsInt();
-        int n = diffs.length;
-        while (lt <= rt){
-            long lim = limit;
+        int rt = Arrays.stream(diffs).max().getAsInt() + 1;
+        
+        while (lt <= rt ){
             int mid = (lt+rt)/2;
+            long l = limit;
             
-            if(solve(diffs, times, lim, mid)){
-                rt = mid-1;
-            }else{
-                lt = mid +1;
-            }
-        }
-        
-        return lt;
-    }
-    static boolean solve(int[] diffs, int[] times, long limit, int level ){
-        long lim = limit;
-        int n = diffs.length;
-        
-        for(int i=0; i<n; i++){
-            if(level >= diffs[i]){
-                lim -= times[i]; 
-            }else{
-                int tmp = diffs[i] - level;
-                if(i==0){
-                    lim -= times[i]*(tmp+1);
+            for(int i=0; i<diffs.length;i++){
+                if(diffs[i]<=mid){
+                    l -= times[i];
                 }else{
-                    lim -= (times[i]+times[i-1])*tmp + times[i];
+                    int cur = diffs[i] - mid;
+                    int prev = (i == 0) ? 0 : times[i-1];
+                    l -= (long)(prev+times[i])*cur;
+                    l -= times[i];
                 }
             }
-            if(lim<0){
-                return false;
+            if(l<0){
+                lt = mid +1;
+            }else{
+                rt = mid-1;
             }
+            
         }
-        return lim>=0;
+            
+        return lt;
     }
 }

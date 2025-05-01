@@ -1,47 +1,30 @@
 import java.util.*;
-
 class Solution {
     public int[] solution(int[] progresses, int[] speeds) {
-        ArrayList<Integer> answer = new ArrayList<>(); 
-        int n = progresses.length;
-        
-        Stack<Integer> stack = new Stack<>();
-        for(int i=0; i<n;i++){
-            int day = 0;
-            day = (100 - progresses[i])/speeds[i];
-            int p = progresses[i] + speeds[i]*day;
-            if(p<100){
-                day+=1;
-            }
-            if(!stack.isEmpty()){
-                if(stack.peek()>day){
-                    stack.push(stack.peek());
-                    continue;
-                }else{
-                    stack.push(day);
-                }
-            }else{
-                stack.push(day);
-            }
+        List<Integer> answer = new ArrayList<>();
+        int n = speeds.length;
+        List<Integer> res = new ArrayList<>();
+        for(int i=0; i<n ;i++){
+            int a = (100 - progresses[i])/speeds[i];
+            int b = (100 - progresses[i])%speeds[i];
+            if(b>0) a+=1;
+            res.add(a);
             
         }
-        
-        Integer[] list = stack.toArray(new Integer[0]);
-        
-        
-        int prev = list[0];
-        int cnt = 1;
-        for(int i=1; i<list.length; i++){
-            if(list[i] != prev){
+        int now = res.get(0);
+        int cnt = 0;
+        for(int i=0;i<res.size();i++){
+            if(res.get(i) > now){
                 answer.add(cnt);
                 cnt = 1;
-                prev = list[i];
+                now = res.get(i);
             }else{
-            cnt++;
+                cnt+=1;
+            }
         }
-    }
         answer.add(cnt);
-        int[] arr = answer.stream().mapToInt(i->i).toArray();
-        return arr;
+        
+        
+        return answer.stream().mapToInt(Integer::intValue).toArray();
     }
 }

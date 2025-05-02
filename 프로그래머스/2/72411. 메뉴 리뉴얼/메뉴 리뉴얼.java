@@ -1,44 +1,45 @@
 import java.util.*;
 class Solution {
-    static HashMap<String, Integer> map;
-    static int max = 0;
+    static String[] orders;
     public String[] solution(String[] orders, int[] course) {
-        ArrayList<String> ans = new ArrayList<>();
+        List<String> answer = new ArrayList<>();
+        this.orders = orders;
         
         
-        for(int c:course){
-            map = new HashMap<>();
-            max = 0;
-            for(String order:orders){
-                char[] strs = order.toCharArray();
-                Arrays.sort(strs);
-                order = new String(strs);
-                dfs(order, "",-1, c, 0);
+        for(int c: course){
+            HashMap<String,Integer> map = new HashMap<>();
+            for(String order: orders){
+                char[] or = order.toCharArray();
+                Arrays.sort(or);
+                dfs(0,new StringBuilder(),map, or,c );
+            }
+            int max = 0;
+            for(int val: map.values()){
+                if(val>max){
+                    max = val;
+                }
             }
             for(String key: map.keySet()){
-                int val = map.get(key);
-                if(val > 1 && max == val){
-                    ans.add(key);
+                if(map.get(key) == max && max>=2 ){
+                    answer.add(key);
                 }
-                
             }
         }
-        Collections.sort(ans);
-        String[] answer = ans.toArray(new String[ans.size()]);
+        Collections.sort(answer);
         
-        return answer;
+        
+        return answer.toArray(new String[0]);
     }
-    static void dfs(String order, String key, int index, int end, int L){
-        if(L==end){
-            map.put(key, map.getOrDefault(key,0)+1);
-            max = Math.max(max, map.get(key));
+    public static void dfs(int idx, StringBuilder sb, HashMap<String,Integer> map, char[] or, int c){
+        if(sb.length() == c ){
+            map.put(sb.toString(), map.getOrDefault(sb.toString(),0)+1);
+            return;
+        }
+        for(int i=idx; i<or.length;i++){
+            sb.append(or[i]);
+            dfs(i+1,sb,map,or,c);
+            sb.deleteCharAt(sb.length()-1);
         }
         
-        for(int i=index+1; i<order.length();i++){
-            dfs(order, key+order.charAt(i), i, end, L+1);
-            
-        }
-        
     }
-
 }

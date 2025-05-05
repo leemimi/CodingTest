@@ -1,85 +1,68 @@
 import java.util.*;
 class Solution {
-    static Queue<int[]>[] q;
-    static int n;
     static int answer;
+    static int[][] points;
+    static int[][] routes;
+    static List<List<int[]>> paths;
     public int solution(int[][] points, int[][] routes) {
         answer = 0;
-        n = routes.length;
-        q = new LinkedList[n];
-        
-        for(int i=0; i<n;i++){
-            q[i] = new LinkedList<>();
+        this.points = points;
+        this.routes = routes;
+        paths = new ArrayList<>();
+        //루트 이동 좌표 담기
+        for(int[]r : routes){
+            List<int[]> path = new ArrayList<>();
+            int[] first = points[r[0] - 1];
+            path.add(new int[]{first[0], first[1]});
+            for (int i = 0; i < r.length - 1; i++) {
+                
+                goRobot(r[i] - 1, r[i + 1] - 1, path);
+            }
+            paths.add(path);
         }
-        calRoute(points, routes);
-        cal();
+        // for(List<int[]> pp: paths){
+        //     for(int[] p: pp){
+        //         System.out.println(Arrays.toString(p));
+        //     }
+        // }
+        
+        
+        int max = 0;
+        //시간별로 map에 넣어서 충돌 지점 계산하기
+        for(List<int[]> pa: paths){
+            max = Math.max(max, pa.size());
+        }
+        for(int t=0; t<max;t++){
+            Map<String,Integer> time = new HashMap<>();
+            for(int i=0; i<paths.size();i++){
+                List<int[]> path = paths.get(i);
+                if(t<path.size()){
+                    int[] pos = path.get(t);
+                    String key = pos[0] + "," + pos[1];
+                    time.put(key, time.getOrDefault(key,0)+1);
+                }
+            }
+            for(int cnt: time.values()){
+                if(cnt>=2) answer++;
+            }
+        }
         
         return answer;
     }
-    static void calRoute(int[][] points, int[][] routes){
-        for(int i=0; i<n;i++){
-            int[] point = points[routes[i][0] - 1];
-            int x = point[0];
-            int y = point[1];
-            
-            q[i].add(new int[]{x,y});
-            for(int j =1; j<routes[0].length;j++){
-                int[] npoint = points[routes[i][j]-1];
-                int nx = npoint[0];
-                int ny = npoint[1];
-                
-                int xx = nx - x;
-                int yy = ny - y;
-                
-                while(xx!=0){
-                    if(xx>0){
-                        xx--;
-                        x++;
-                        q[i].add(new int[]{x,y});
-                    }else{
-                        xx++;
-                        x--;
-                        q[i].add(new int[]{x,y});
-                    }
-                }
-                while(yy!=0){
-                    if(yy>0){
-                        yy--;
-                        y++;
-                        q[i].add(new int[]{x,y});
-                    }else{
-                        yy++;
-                        y--;
-                        q[i].add(new int[]{x,y});
-                    }
-                }
-                
-            }
+    public static void goRobot(int start, int target, List<int[]> path){
+        int sx = points[start][0]-1;
+        int sy = points[start][1]-1;
+        int gx = points[target][0]-1;
+        int gy = points[target][1]-1;
+
+        while(sx!=gx){
+            sx += (gx>sx)? 1:-1;
+            path.add(new int[]{sx,sy});
         }
-    }
-    static void cal(){
-        int cnt = 0;
+        while(sy!=gy){
+            sy += (gy>sy)? 1:-1;
+            path.add(new int[]{sx,sy});
+        }
         
-        while(cnt!=n){
-            int[][] map = new int[101][101];
-            cnt = 0;
-            
-            for(int i=0; i<n;i++){
-                if(q[i].isEmpty()){
-                    cnt++;
-                    continue;
-                }
-                int[] tmp = q[i].poll();
-                map[tmp[0]][tmp[1]]++;
-            }
-            for(int i=0; i<101; i++){
-                for(int j=0; j<101;j++){
-                    if(map[i][j]>=2){
-                        answer++;
-                    }
-                }
-            }
-            
-        }
     }
 }

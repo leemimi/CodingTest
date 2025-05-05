@@ -1,49 +1,40 @@
 import java.util.*;
 class Solution {
-    static int n;
-    static boolean[] visited;
+    static String target;
+    static String[] words;
     static int answer;
+    static boolean[]  visited;
+    static int min = Integer.MAX_VALUE;
     public int solution(String begin, String target, String[] words) {
-        answer = 51;
-        n = words.length;
         
-        if(!Arrays.asList(words).contains(target)){
-            return 0;
-        }
-        visited = new boolean[n];
-        dfs(begin,0,words,target,0);
+        this.target = target;
+        this.words = words;
+        answer = 0;
+        visited = new boolean[words.length];
+        if(!Arrays.asList(words).contains(target)) return 0;
+        dfs(0,begin);
         
-        
-        return answer;
+        return min;
     }
-    static void dfs(String now, int L, String[] words,String target, int cnt){
-        
-        if(now.equals(target)){
-            answer = Math.min(cnt, answer);
+    public static void dfs(int L, String start){
+        if(start.equals(target)){
+            min = Math.min(min, L);
             return;
         }
-        
-        
-        for(int i=0; i<n;i++){
-
-            if(!visited[i]&&canTransform(now,words[i])){
+        for(int i=0; i<words.length;i++){
+            if(!visited[i] && check(start, words[i])){
                 visited[i] = true;
-                dfs(words[i], L+1, words, target, cnt+1);
+                dfs(L+1,words[i]);
                 visited[i] = false;
             }
         }
-        
     }
-    static boolean canTransform(String now, String word){
-        int  diff =0;
-        for(int j=0; j<now.length();j++){
-            if(now.charAt(j) != word.charAt(j) ){
-                diff++;
-            }
-            if(diff>1){
-                return false;
-            }
+    public static boolean check(String s, String w){
+        int cnt=0;
+        for(int i=0;i<w.length();i++){
+            if(s.charAt(i) != w.charAt(i)) cnt++;
+            if(cnt >1 ) return false;
         }
-        return diff==1;
-}
+        return true;
+    }
 }

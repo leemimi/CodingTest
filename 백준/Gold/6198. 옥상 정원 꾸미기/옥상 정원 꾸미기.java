@@ -1,33 +1,26 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.Arrays;
-import java.util.Scanner;
-import java.util.Stack;
-import java.util.StringTokenizer;
+import java.io.*;
+import java.util.*;
 
-
-public class Main {
-    public static void main (String[] args) throws IOException {
-        BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
-        int N = Integer.parseInt(bf.readLine());
-
-        int[] arr = new int[N + 1];
-        for (int i = 1; i <= N; i++) {
-            arr[i] = Integer.parseInt(bf.readLine());
+class Main {
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        int n = Integer.parseInt(br.readLine());
+        
+        int[] heights = new int[n];
+        
+        for (int i = 0; i < n; i++) {
+            heights[i] = Integer.parseInt(br.readLine());
         }
-        //System.out.println(Arrays.toString(arr));
-
         Stack<Integer> stack = new Stack<>();
-        long sum = 0;
-        stack.push(arr[1]);
-        for (int i = 2; i <= N; i++) {
-            while (!stack.isEmpty()&&stack.peek()<=arr[i]) {
-                    stack.pop();
-                }
-            sum += stack.size();
-            stack.push(arr[i]);
+        long answer = 0;
+        for(int i =0 ;i<n;i++){
+            while(!stack.isEmpty()&& stack.peek()<=heights[i]){
+                stack.pop();                
+            }
+            answer += stack.size();
+            stack.push(heights[i]);
         }
-        System.out.println(sum);
-        }
+        System.out.println(answer);
+
     }
+}

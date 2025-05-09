@@ -1,36 +1,36 @@
 import java.util.*;
 class Solution {
+    static int[] cards;
     public int solution(int[] cards) {
+        this.cards = cards;
         int answer = 0;
-        
-        for(int i=0; i<cards.length;i++){
-            boolean[] visited = new boolean[cards.length];
-            int a = find(cards, visited, cards[i]);
-            
-            for(int j=0; j<cards.length;j++){
+        int n = cards.length;
+        for(int i=0;i<n;i++){
+            boolean[] visited = new boolean[n];
+
+            int a = makeBox(cards[i], visited);
+            for(int j=0; j<n;j++){
                 if(!visited[j]){
-                    int b = find(cards, visited, cards[j]);
-                    answer = Math.max(a*b, answer);
+                    int b = makeBox(cards[j],visited);
+                    answer = Math.max(answer, a*b);
                 }
-                
             }
+            
+            
             
         }
         
         
         return answer;
     }
-    static int find(int[] cards, boolean[] visited, int now){
+    public static int makeBox(int num, boolean[] visited){
         int cnt = 0;
         
-        while(!visited[now-1]){
-            visited[now-1] = true;
-            now = cards[now-1];
+        while(!visited[num-1]){
+            visited[num-1] = true;
+            num = cards[num-1];
             cnt++;
         }
-        
         return cnt;
-        
     }
-    
 }

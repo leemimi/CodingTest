@@ -1,24 +1,19 @@
 import java.util.*;
 class Solution {
-    static String[] gems;
-    
     public int[] solution(String[] gems) {
-
-        this.gems = gems;
-        Map<String, Integer> map = new HashMap<>();
-        Set<String> set = new HashSet<>(Arrays.asList(gems));
-        System.out.println(set);
-        int totalNum = set.size();
-        
-        int lt = 0;
-        int rt = 0;
-        int min = gems.length;
         int[] answer = {0, gems.length-1};
-        
-        while(rt<gems.length){
-            map.put(gems[rt], map.getOrDefault(gems[rt], 0)+1);
+        HashSet<String> set = new HashSet<>(Arrays.asList(gems));
+        Map<String, Integer> map = new HashMap<>();
+        int n = gems.length;
+
+        int total= set.size();
+        int lt=0;
+        int rt=0;
+        int min = n;
+        while(rt<n){
+            map.put(gems[rt], map.getOrDefault(gems[rt],0)+1);
             rt++;
-            while(map.size() == totalNum){
+            while(map.size()  == total){
                 if(rt-lt < min){
                     min = rt-lt;
                     answer[0] = lt;
@@ -30,8 +25,8 @@ class Solution {
                 }
                 lt++;
             }
+            
         }
-
         
         return new int[]{answer[0]+1, answer[1]+1};
     }

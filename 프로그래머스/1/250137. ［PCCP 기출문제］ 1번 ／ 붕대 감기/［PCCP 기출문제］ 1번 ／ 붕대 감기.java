@@ -2,51 +2,34 @@ import java.util.*;
 class Solution {
     public int solution(int[] bandage, int health, int[][] attacks) {
         int answer = 0;
-        
         int time = 0;
-        int v = 0;
-        int n = attacks.length;
-        int cnt = 0;
-        
-        Queue<Integer[]> q = new LinkedList<>();
-        for(int i=0; i<n;i++){
-            q.add(new Integer[]{attacks[i][0], attacks[i][1]});
-        }
-        
-        int maxh = health;
-        
-        Integer[] a;
-        
-        while(!q.isEmpty()){
-            a = q.peek();
+        int cnt =0;
+        int nowHealth = health;
+        for(int i=0; i<attacks.length;i++){
+            int[] attack = attacks[i];
+            while(time<attack[0]){
+                time++;
+                if(nowHealth < health){
+                    cnt++;
+                    nowHealth+=bandage[1];
+                    if(nowHealth>health) nowHealth = health;
+                    if(cnt==bandage[0]){
+                        nowHealth+=bandage[2];
+                        cnt=0;
+                        if(nowHealth>health) nowHealth = health;
+                    }
+                }                
+            }
+            
+            nowHealth -= attack[1];
+            cnt=0;
+            if(nowHealth <=0){
+                return -1;
+            }
             time++;
-            
-            System.out.println(time);
-            if(time == a[0]){
-                v=0;//초기화
-                health -= a[1];
-                q.poll();
-                if(health<=0){
-                    health = -1;
-                    break;
-                }
-                continue;
-            }
-            health+=bandage[1];
-            if(health>maxh) {
-                health = maxh;
-            }
-            
-            v++;
-            if(v==bandage[0]){
-                v=0;
-                health+= bandage[2];
-                if(health>maxh){
-                    health = maxh;
-                }
-            }
         }
-
-        return health;
+        
+        
+        return nowHealth;
     }
 }

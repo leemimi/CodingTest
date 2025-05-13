@@ -1,30 +1,29 @@
 import java.util.*;
 class Solution {
-    static int answer;
     static int n;
-    static int[][] dun;
-    static boolean[] visited;    
+    static int[][] dungeons;
+    static int answer;
     public int solution(int k, int[][] dungeons) {
+        this.dungeons = dungeons;
         answer = 0;
-        visited = new boolean[dungeons.length];
         n = dungeons.length;
-        
-        dun = dungeons;
-        
-        dfs(0,k);
+        for(int i=0;i<n;i++){
+            boolean[] visited = new boolean[n];
+            dfs(i, k, 0, visited);
+        }
         
         return answer;
     }
-    static void dfs(int L, int kk){
-        
-        for(int i=0; i<n; i++){
-            if(!visited[i] && kk>=dun[i][0]){
+    public static void dfs(int L, int hp, int cnt, boolean[] visited){
+        if(L==n){
+            answer = Math.max(cnt, answer);
+        }
+        for(int i=0; i<n;i++){
+            if(!visited[i]&& hp >= dungeons[i][0]){
                 visited[i] = true;
-                dfs(L+1, kk- dun[i][1]);
+                dfs(L+1, hp-dungeons[i][1], cnt+1, visited);
                 visited[i] = false;
             }
         }
-         answer = Math.max(answer, L);
-        
     }
 }

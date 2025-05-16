@@ -1,3 +1,4 @@
-SELECT I.ITEM_ID, I.ITEM_NAME
-FROM ITEM_INFO I INNER JOIN ITEM_TREE T ON I.ITEM_ID = T.ITEM_ID
-WHERE T.PARENT_ITEM_ID IS NULL
+SELECT a.item_id, a.item_name
+FROM ITEM_INFO A JOIN ITEM_TREE B ON A.ITEM_ID = B.ITEM_ID
+where b.parent_item_id is null
+order by a.item_id asc

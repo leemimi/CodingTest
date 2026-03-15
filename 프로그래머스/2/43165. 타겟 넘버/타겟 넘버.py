@@ -1,21 +1,15 @@
 def solution(numbers, target):
     answer = 0
     
-    def dfs(L, cnt):
-        nonlocal answer, numbers
-        
+    def dfs(L, target_sum):
+        nonlocal answer
         if L == len(numbers):
-            if cnt== target:
-                answer+=1
+            if target_sum == target:
+                answer += 1
             return
-            
         
-        dfs(L+1, cnt+numbers[L])
-        dfs(L+1, cnt-numbers[L])
+        dfs(L+1, target_sum + numbers[L])
+        dfs(L+1, target_sum - numbers[L])
         
-        return
-    
     dfs(0,0)
-
-    
     return answer
